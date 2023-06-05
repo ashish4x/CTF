@@ -163,6 +163,7 @@ def index():
     
     global flagsString
     global lastFetched
+
    
     
 
@@ -170,12 +171,14 @@ def index():
     # yield("\n")
     yield("Last Solved : "+ str(format_time_ago(lastFetched)) + '<br>')
     yield("We run the script everytime someone visit the page and update the flags!")
+    thread = threading.Thread(target=solver)
+    thread.start()
 
     
 
 
       
-    return("Solving thread is queued")
+    return("done")
 
         
 
