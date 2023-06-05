@@ -12,7 +12,7 @@ flagsString="Solving"
 lastFetched=datetime.now()
 
 def solver():
-    with app.app_context():
+    # with app.app_context():
 
         global flagsString
         global lastFetched
@@ -142,8 +142,8 @@ def solver():
 
         flagsString = ', '.join(flags)
         lastFetched=datetime.now()
+        
         schedule.every(30).minutes.do(solver)
-
         
     
 def run_script():
