@@ -147,9 +147,15 @@ def solver():
         
     
 def run_script():
-    # Run the script in a separate thread
-    thread = threading.Thread(target=solver)
-    thread.start()
+    # Run the script initially
+    solver()
+
+    # Schedule the script to run every 30 minutes
+    schedule.every(30).minutes.do(solver)
+
+    # Continuously run the scheduled tasks in a separate thread
+    while True:
+        schedule.run_pending()
     
 
 # @app.before_first_request
@@ -192,5 +198,6 @@ def index():
 
 
 if __name__ == '__main__':
-    run_script()
+    thread = threading.Thread(target=run_script)
+    thread.start()
     app.run()
