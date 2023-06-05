@@ -1,5 +1,4 @@
-from flask import Flask, render_template, jsonify
-from flask_sse import sse
+from flask import Flask
 from datetime import datetime
 import re
 import requests
