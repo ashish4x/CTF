@@ -10,12 +10,15 @@ import schedule
 app = Flask(__name__)
 flagsString="Solving"
 lastFetched=datetime.now()
+status="nah"
 
 def solver():
     # with app.app_context():
 
         global flagsString
         global lastFetched
+        global status
+        status="inside solver"
 
         url= "https://0ijq1i6sp1.execute-api.us-east-1.amazonaws.com/dev/"
         flags=[]
@@ -23,8 +26,9 @@ def solver():
     
         # browser
         def get_browser():
+            global status
             pattern = r'Mozilla\/[\d\.]+\s\(.*?\) AppleWebKit\/[\d\.]+\s\(KHTML, like Gecko\) Version\/[\d\.]+\sSafari\/[\d\.]+'
-
+            status="inside browser"
             
             print("\nFinding the first Flag")
             browserReq= requests.get(url+'browser')
@@ -38,10 +42,12 @@ def solver():
 
         #hash
         def get_hash():
+            global status
             print("\nDecrypting the MD5 hash")
             hashReq=requests.get(url+'hash')
             pattern = r"md5\(flag\+salt\):[a-f0-9]+:"
             pattern2 = r"md5\(flag\+salt\):([^:]+):"
+            status="inside hash"
 
             match = re.search(pattern2, hashReq.json())
             if match:
@@ -77,6 +83,8 @@ def solver():
 
         # exception
         def get_exception():
+            global status
+            status="inside exception"
             print("\nFinding the third flag")
             exceptionReq=requests.get(url+"exception?q=tqaaaaa")
             if exceptionReq.json():
@@ -86,7 +94,9 @@ def solver():
 
         #stream
         def get_stream():
+            global status
             tmpRes=set()
+            status="inside stream"
             print("\nFinding last flag")
             print("Fetching stream characters")
             for i in range(150):
@@ -130,6 +140,7 @@ def solver():
 
             if result:
                 # print("Word found:", result)
+                status="done"
                 print("Last flag found")
                 flags.append(result)
             else:
@@ -142,6 +153,7 @@ def solver():
 
         flagsString = ', '.join(flags)
         lastFetched=datetime.now()
+        status="done complete"
         
         schedule.every(30).minutes.do(solver)
         
@@ -178,6 +190,7 @@ def index():
     
     
     global flagsString
+    global status
     global lastFetched
 
    
@@ -187,6 +200,7 @@ def index():
     # yield("\n")
     yield("Last Solved : "+ str(format_time_ago(lastFetched)) + '<br>')
     yield("We run the script everytime someone visit the page and update the flags!")
+    yield("<br>"+status)
   
     
 
