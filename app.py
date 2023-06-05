@@ -1,6 +1,7 @@
 from flask import Flask
 from datetime import datetime
 import re
+import threading
 import requests
 import hashlib
 import itertools
@@ -9,30 +10,10 @@ app = Flask(__name__)
 flagsString="Solving"
 lastFetched=datetime.now()
 
+def solver():
 
-@app.route('/')
-def index():
-    
-    def format_time_ago(dt):
-        current_time = datetime.now()
-        time_difference = current_time - dt
-
-        minutes = int(time_difference.total_seconds() / 60)
-
-        return f"{minutes} minutes ago"
-    
     global flagsString
     global lastFetched
-   
-    
-
-    yield("<b>"+ "<h3>"+ "Flags: " + flagsString + '<br>'+ "</h3>" +"</b>")
-    # yield("\n")
-    yield("Last Solved : "+ str(format_time_ago(lastFetched)) + '<br>')
-    yield("We run the script everytime someone visit the page and update the flags!")
-
-    
-
 
     url= "https://0ijq1i6sp1.execute-api.us-east-1.amazonaws.com/dev/"
     flags=[]
@@ -166,8 +147,36 @@ def index():
 
 
         
-        
 
+
+@app.route('/')
+def index():
+    
+    def format_time_ago(dt):
+        current_time = datetime.now()
+        time_difference = current_time - dt
+
+        minutes = int(time_difference.total_seconds() / 60)
+
+        return f"{minutes} minutes ago"
+    thread = threading.Thread(target=solver)
+    thread.start()
+    
+    global flagsString
+    global lastFetched
+   
+    
+
+    yield("<b>"+ "<h3>"+ "Flags: " + flagsString + '<br>'+ "</h3>" +"</b>")
+    # yield("\n")
+    yield("Last Solved : "+ str(format_time_ago(lastFetched)) + '<br>')
+    yield("We run the script everytime someone visit the page and update the flags!")
+
+    
+
+
+    yield('<br>')    
+    return("Solving thread is queued")
 
         
 
