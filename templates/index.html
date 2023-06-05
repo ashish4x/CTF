@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Ramp CTF</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+
+    <h3 id="data-container"></h3>
+
+    <script>
+        // Function to fetch live data using AJAX
+        function fetchLiveData() {
+            $.ajax({
+                url: "/get_live",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    // Update the data container with the received data
+                    var dataContainer = document.getElementById("data-container");
+                    dataContainer.innerHTML = data.message;
+                },
+                complete: function () {
+                    // Schedule the next AJAX request after a delay (e.g., every 1 second)
+                    setTimeout(fetchLiveData, 1000);
+                }
+            });
+        }
+
+        // Start fetching live data
+        fetchLiveData();
+    </script>
+</body>
+
+</html>
