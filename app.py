@@ -1,6 +1,7 @@
 from flask import Flask
 from datetime import datetime
 import re
+import time
 import threading
 import requests
 import hashlib
@@ -11,6 +12,7 @@ app = Flask(__name__)
 flagsString="Solving"
 lastFetched=datetime.now()
 switch=0
+time_remaining=0
 status="Not running the script"
 
 def solver():
@@ -168,20 +170,30 @@ def solver():
         flagsString = ', '.join(flags)
         lastFetched=datetime.now()
         status="script completed"
-        switch=0
+        
         
         
     
-# def run_script():
-#     # Run the script initially
-#     solver()
+def run_script():
+    global time_remaining
+    # Run the script initially
+    schedule.every(30).minutes.do(solver)
+    next_event = schedule.next_run()
+    current_event = datetime.now()
+    
+    time_r = next_event - current_event
+    time_remaining=int(time_r.total_seconds()/60)
+    solver()
+    
 
-#     # Schedule the script to run every 30 minutes
-#     schedule.every(30).minutes.do(solver)
+    # Schedule the script to run every 30 minutes
+    
+    
 
-#     # Continuously run the scheduled tasks in a separate thread
-#     while True:
-#         schedule.run_pending()
+
+    # Continuously run the scheduled tasks in a separate thread
+    while True:
+        schedule.run_pending()
     
 
 # @app.before_first_request
@@ -200,26 +212,30 @@ def index():
 
         minutes = int(time_difference.total_seconds() / 60)
 
-        return f"{minutes} minutes ago"
+        return f"{minutes}"
     
     
     global flagsString
     global status
     global lastFetched
     global switch
+    global time_remaining
 
    
     
 
     yield("<b>"+ "<h3>"+ "Flags: " + flagsString + '<br>'+ "</h3>" +"</b>")
     # yield("\n")
-    yield("Last Solved : "+ str(format_time_ago(lastFetched)) + '<br>')
-    yield("We run the script everytime someone visit the page and update the flags!"+"<br>"+"<br>")
+    yield("Last Solved : "+ str(format_time_ago(lastFetched)) + " minutes ago"+ '<br>')
+    # yield("We run the script everytime someone visit the page and update the flags!"+"<br>"+"<br>")
     yield("<b>"+  "Status: "  + "</b>"+ status)
     # yield(status)
   
     if(switch==0):
-        solver()
+        run_script()
+    else:
+        yield("<br>"+ "The script will again execute in: "+ str(time_remaining)+" minutes")
+
 
 
       
