@@ -182,10 +182,11 @@ def run_script():
    
     # global next_event
     # Run the script initially
-    schedule.every(30).minutes.do(solver)
+    # schedule.every(30).minutes.do(solver)
     # next_event = schedule.next_run()
-    
-    solver()
+    while True: 
+        solver()
+        time.sleep(30 * 60)
     
 
     # Schedule the script to run every 30 minutes
@@ -194,15 +195,16 @@ def run_script():
 
 
     # Continuously run the scheduled tasks in a separate thread
-    while True:
-        schedule.run_pending()
+    # while True:
+    #     schedule.run_pending()
     
 
 # @app.before_first_request
 # def on_startup():
     
 
-        
+thread = threading.Thread(target=run_script)
+thread.start()        
 
 
 @app.route('/')
@@ -237,10 +239,10 @@ def index():
     yield("<b>"+  "Status: "  + "</b>"+ status)
     # yield(status)
   
-    if(switch==0):
-        thread = threading.Thread(target=run_script())
-        thread.start()
-        return("done")
+    # if(switch==0):
+    #     thread = threading.Thread(target=run_script())
+    #     thread.start()
+    #     return("done")
     
         # yield("<br>"+ "The script will again execute in: "+ str(time_remaining)+" minutes")
 
