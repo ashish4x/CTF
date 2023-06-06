@@ -127,12 +127,12 @@ def solver():
                 global status
                 status="getting tasks"
                 tasks=[]
-                for i in range(100):
+                for i in range(1):
                     status="inside task loop"
-                    tasks.append(asyncio.create_task(session.get(url+"stream")))
+                    tasks.append(session.get(url+"stream"))
                     status="inside task loop 2"
                 return tasks
-            
+                
             async def get_stream_char():
                 global status
                 async with aiohttp.ClientSession() as session:
