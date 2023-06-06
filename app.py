@@ -128,6 +128,7 @@ def solver():
                 status="getting tasks"
                 tasks=[]
                 for i in range(100):
+                    status="inside task loop"
                     tasks.append(asyncio.create_task(session.get(url+"stream")))
                 return tasks
             
