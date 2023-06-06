@@ -11,7 +11,7 @@ app = Flask(__name__)
 flagsString="Solving"
 lastFetched=datetime.now()
 switch=0
-status="nah"
+status="Not running the script"
 
 def solver():
     # with app.app_context():
@@ -21,7 +21,7 @@ def solver():
         global status
         global switch
         switch=1
-        status="inside solver"
+        status="Solving"
 
         url= "https://0ijq1i6sp1.execute-api.us-east-1.amazonaws.com/dev/"
         flags=[]
@@ -31,20 +31,20 @@ def solver():
         def get_browser():
             global status
             pattern = r'Mozilla\/[\d\.]+\s\(.*?\) AppleWebKit\/[\d\.]+\s\(KHTML, like Gecko\) Version\/[\d\.]+\sSafari\/[\d\.]+'
-            status="inside browser"
+            status="Finding the first flag"
             
             print("\nFinding the first Flag")
             browserReq= requests.get(url+'browser')
-            status="got req"
+            # status="got req"
             user_agent = re.search(pattern, browserReq.json()).group()
-            status="got user-agent"
+            # status="got user-agent"
             headers = {"User-Agent": user_agent}
             flag1 = requests.get(url+'browser', headers=headers)
-            status="got flag"
+            # status="got first flag"
             if flag1.json():
                 print("Found the first flag")
                 flags.append(flag1.json())
-                status="browser work completed"
+                status="got first flag"
 
             
 
@@ -56,7 +56,7 @@ def solver():
             hashReq=requests.get(url+'hash')
             pattern = r"md5\(flag\+salt\):[a-f0-9]+:"
             pattern2 = r"md5\(flag\+salt\):([^:]+):"
-            status="inside hash"
+            status="finding second flag"
 
             match = re.search(pattern2, hashReq.json())
             if match:
@@ -79,7 +79,7 @@ def solver():
             # Provide the salt and encrypted value to compare against
 
             encrypted_value_to_compare = md5  # Example encrypted value for the word "password"
-
+            status="decrypting md5 hash"
             # Read words from file and compare encrypted values
             with open("list.txt", "r") as file:
                 for word in file:
@@ -87,17 +87,19 @@ def solver():
                     encrypted_word = encrypt_with_salt(word, salt)
                     if compare_encrypted_value(word, salt, encrypted_value_to_compare):
                         print("Found the second flag")
+                        status="found second flag"
                         flags.append(word)
 
 
         # exception
         def get_exception():
             global status
-            status="inside exception"
+            status="finding third flag"
             print("\nFinding the third flag")
             exceptionReq=requests.get(url+"exception?q=tqaaaaa")
             if exceptionReq.json():
                 print("Third flag found")
+                status="found third flag"
                 flags.append(exceptionReq.json())
 
 
@@ -105,16 +107,18 @@ def solver():
         def get_stream():
             global status
             tmpRes=set()
-            status="inside stream"
+            status="finding fourth flag"
             print("\nFinding last flag")
             print("Fetching stream characters")
-            for i in range(150):
+            status="fetching stream characters"
+            for i in range(60):
                 request=requests.get(url+"stream")
-                
+                status= (str(i)+"characters fetched")
                 tmpRes.add(request.json())
 
 
             print("Done fetching")
+            status="done fetching stream characters"
             print(tmpRes)
 
             def find_dictionary_word(characters, word_list_file):
@@ -149,10 +153,11 @@ def solver():
 
             if result:
                 # print("Word found:", result)
-                status="done"
+                status="last flag found"
                 print("Last flag found")
                 flags.append(result)
             else:
+
                 print("No word found.")
 
         get_browser()
@@ -162,7 +167,7 @@ def solver():
 
         flagsString = ', '.join(flags)
         lastFetched=datetime.now()
-        status="done complete"
+        status="script completed"
         switch=0
         
         
