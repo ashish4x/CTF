@@ -11,6 +11,7 @@ import schedule
 app = Flask(__name__)
 flagsString="Solving"
 lastFetched=datetime.now()
+next_event=datetime.now()
 switch=0
 time_remaining=0
 status="Not running the script"
@@ -175,14 +176,12 @@ def solver():
         
     
 def run_script():
-    global time_remaining
+   
+    global next_event
     # Run the script initially
     schedule.every(30).minutes.do(solver)
     next_event = schedule.next_run()
-    current_event = datetime.now()
     
-    time_r = next_event - current_event
-    time_remaining=int(time_r.total_seconds()/60)
     solver()
     
 
@@ -220,8 +219,12 @@ def index():
     global lastFetched
     global switch
     global time_remaining
+    global next_event
 
-   
+    current_event = datetime.now()
+    
+    time_r = next_event - current_event
+    time_remaining=int(time_r.total_seconds()/60)
     
 
     yield("<b>"+ "<h3>"+ "Flags: " + flagsString + '<br>'+ "</h3>" +"</b>")
