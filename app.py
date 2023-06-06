@@ -124,8 +124,10 @@ def solver():
             status="fetching stream characters"
 
             def get_tasks(session):
+                global status
+                status="getting tasks"
                 tasks=[]
-                for i in range(200):
+                for i in range(100):
                     tasks.append(asyncio.create_task(session.get(url+"stream")))
                 return tasks
             
