@@ -208,8 +208,7 @@ def index():
     yield("We run the script everytime someone visit the page and update the flags!")
     yield("<br>"+status)
   
-    thread = threading.Thread(target=run_script)
-    thread.start()
+    
 
 
       
@@ -219,5 +218,7 @@ def index():
 
 
 if __name__ == '__main__':
+    thread = threading.Thread(target=run_script)
+    thread.start()
     
     app.run()
