@@ -177,7 +177,7 @@ def solver():
         get_browser()
         get_hash()
         get_exception()
-        # get_stream()
+        get_stream()
 
         flagsString = ', '.join(flags)
         lastFetched=datetime.now()
@@ -215,17 +215,17 @@ def solver():
 # thread.start()      
 
 
-def run_script():
-    global next_event
-    if not scheduler.running:
-        # solver()
-        scheduler.add_job(solver, 'interval', minutes=30,id='solver', next_run_time=datetime.now())
-        scheduler.start()
-        next_iter = scheduler.get_job('solver').next_run_time
+# def run_script():
+#     global next_event
+#     if not scheduler.running:
+#         # solver()
+#         scheduler.add_job(solver, 'interval', minutes=30,id='solver', next_run_time=datetime.now())
+#         scheduler.start()
+#         next_iter = scheduler.get_job('solver').next_run_time
 
-        datetime_str = str(next_iter)
-        datetime_obj = datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S.%f%z")
-        next_event = datetime_obj.replace(tzinfo=None)
+#         datetime_str = str(next_iter)
+#         datetime_obj = datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S.%f%z")
+#         next_event = datetime_obj.replace(tzinfo=None)
      
     
     
@@ -250,6 +250,16 @@ def index():
     global time_remaining
     global next_event
     global seconds_remaining
+
+    if not scheduler.running:
+        # solver()
+        scheduler.add_job(solver, 'interval', minutes=30,id='solver', next_run_time=datetime.now())
+        scheduler.start()
+        next_iter = scheduler.get_job('solver').next_run_time
+
+        datetime_str = str(next_iter)
+        datetime_obj = datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S.%f%z")
+        next_event = datetime_obj.replace(tzinfo=None)
 
     
 
@@ -280,7 +290,7 @@ def index():
     return("done")
 
 
-run_script()       
+# run_script()       
 
 
 if __name__ == '__main__':
