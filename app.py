@@ -208,7 +208,8 @@ def run_script():
 # def on_startup():
     
 
-run_script()       
+thread = threading.Thread(target=run_script)
+thread.start()      
 
 
 @app.route('/')
