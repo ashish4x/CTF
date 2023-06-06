@@ -253,7 +253,7 @@ def index():
 
     if not scheduler.running:
         # solver()
-        scheduler.add_job(solver, 'interval', minutes=30,id='solver', next_run_time=datetime.now())
+        scheduler.add_job(solver, 'interval', minutes=30,id='solver',next_run_time=datetime.now())
         scheduler.start()
         next_iter = scheduler.get_job('solver').next_run_time
 
