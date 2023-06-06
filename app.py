@@ -18,7 +18,7 @@ status="Not running the script"
 
 def solver():
     # with app.app_context():
-
+    while true:
         global flagsString
         global lastFetched
         global status
@@ -172,17 +172,17 @@ def solver():
         lastFetched=datetime.now()
         status="script completed"
         
-        
+        time.sleep(30 * 60)
         
     
-def run_script():
+# def run_script():
    
-    global next_event
-    # Run the script initially
-    schedule.every(30).minutes.do(solver)
-    next_event = schedule.next_run()
+#     global next_event
+#     # Run the script initially
+#     schedule.every(30).minutes.do(solver)
+#     next_event = schedule.next_run()
     
-    solver()
+#     solver()
     
 
     # Schedule the script to run every 30 minutes
@@ -221,10 +221,10 @@ def index():
     global time_remaining
     global next_event
 
-    current_event = datetime.now()
+    # current_event = datetime.now()
     
-    time_r = next_event - current_event
-    time_remaining=int(time_r.total_seconds()/60)
+    # time_r = next_event - current_event
+    # time_remaining=int(time_r.total_seconds()/60)
     
 
     yield("<b>"+ "<h3>"+ "Flags: " + flagsString + '<br>'+ "</h3>" +"</b>")
@@ -235,11 +235,11 @@ def index():
     # yield(status)
   
     if(switch==0):
-        thread = threading.Thread(target=run_script())
+        thread = threading.Thread(target=solver())
         thread.start()
         return("done")
     else:
-        yield("<br>"+ "The script will again execute in: "+ str(time_remaining)+" minutes")
+        # yield("<br>"+ "The script will again execute in: "+ str(time_remaining)+" minutes")
 
 
 
