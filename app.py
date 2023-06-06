@@ -1,5 +1,6 @@
 from flask import Flask
 from datetime import datetime
+from apscheduler.schedulers.background import BackgroundScheduler
 import re
 import time
 import threading
@@ -9,6 +10,7 @@ import itertools
 import schedule
 
 app = Flask(__name__)
+scheduler = BackgroundScheduler(daemon=True)
 flagsString="Solving"
 lastFetched=datetime.now()
 next_event=datetime.now()
@@ -183,15 +185,15 @@ def solver():
         
         
     
-def run_script():
+# def run_script():
    
-    # global next_event
-    # Run the script initially
-    # schedule.every(30).minutes.do(solver)
-    # next_event = schedule.next_run()
-    while True: 
-        solver()
-        time.sleep(30 * 60)
+#     # global next_event
+#     # Run the script initially
+#     # schedule.every(30).minutes.do(solver)
+#     # next_event = schedule.next_run()
+#     while True: 
+#         solver()
+#         time.sleep(30 * 60)
     
 
     # Schedule the script to run every 30 minutes
@@ -208,12 +210,20 @@ def run_script():
 # def on_startup():
     
 
-thread = threading.Thread(target=run_script)
-thread.start()      
+# thread = threading.Thread(target=run_script)
+# thread.start()      
 
+@app.before_first_request
+def start_scheduler():
+     
+     if not scheduler.running:
+        solver()
+        scheduler.add_job(solver, 'interval', minutes=5)
+        scheduler.start()
 
 @app.route('/')
 def index():
+   
     
     def format_time_ago(dt):
         current_time = datetime.now()
