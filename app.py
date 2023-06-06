@@ -17,13 +17,14 @@ time_remaining=0
 status="Not running the script"
 
 def solver():
+    switch=1
     # with app.app_context():
     while true:
         global flagsString
         global lastFetched
         global status
         global switch
-        switch=1
+        
         status="Solving"
 
         url= "https://0ijq1i6sp1.execute-api.us-east-1.amazonaws.com/dev/"
@@ -237,14 +238,14 @@ def index():
     if(switch==0):
         thread = threading.Thread(target=solver())
         thread.start()
-        return("done")
+        return()
     
         # yield("<br>"+ "The script will again execute in: "+ str(time_remaining)+" minutes")
 
 
 
       
-    return("done")
+    return()
 
         
 
