@@ -273,7 +273,7 @@ def solver():
  
 
 def run_script():
-    thread = threading.Thread(target=solver, daemon=False)
+    thread = threading.Thread(target=solver)
     thread.start()  
     
 
