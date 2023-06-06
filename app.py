@@ -330,7 +330,7 @@ def index():
 
     
 
-    yield("<b>"+ "<h3>"+ "Flags: " + flagsString + "</h3>" +"</b>"+"<br>")
+    yield("<h3>"+ "<b>"+ "Flags: " + flagsString + "</b>" +"</h3>"+"<br>")
     # yield("\n")
     yield("Last Solved : "+ str(format_time_ago(lastFetched)) + " minutes ago"+ " | try refreshing if you don't see the flags " '<br>')
     # yield("We run the script everytime someone visit the page and update the flags!"+"<br>"+"<br>")
