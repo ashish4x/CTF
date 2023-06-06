@@ -10,6 +10,7 @@ import schedule
 app = Flask(__name__)
 flagsString="Solving"
 lastFetched=datetime.now()
+switch=0
 status="nah"
 
 def solver():
@@ -18,6 +19,8 @@ def solver():
         global flagsString
         global lastFetched
         global status
+        global switch
+        switch=1
         status="inside solver"
 
         url= "https://0ijq1i6sp1.execute-api.us-east-1.amazonaws.com/dev/"
@@ -160,7 +163,7 @@ def solver():
         flagsString = ', '.join(flags)
         lastFetched=datetime.now()
         status="done complete"
-        
+        switch=0
         
         
     
@@ -198,6 +201,7 @@ def index():
     global flagsString
     global status
     global lastFetched
+    global switch
 
    
     
@@ -208,7 +212,9 @@ def index():
     yield("We run the script everytime someone visit the page and update the flags!")
     yield("<br>"+status)
   
-    
+    if(switch==0):
+        thread = threading.Thread(target=run_script)
+        thread.start()
 
 
       
@@ -218,7 +224,6 @@ def index():
 
 
 if __name__ == '__main__':
-    thread = threading.Thread(target=run_script)
-    thread.start()
+   
     
     app.run()
