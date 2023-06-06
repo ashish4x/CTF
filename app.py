@@ -334,15 +334,19 @@ def index():
 
     yield('<br>'+'<a href=https://github.com/ashish4x/CTF target="_blank">'+"Github Link"+"</a")
 
-    if(switch==0):
-        run_script()  
+    
+     
     return("done")
 
 
-# run_script()       
+@app.route('/start')
+def start():
+    run_script()
+
 
 
 if __name__ == '__main__':
    
     
     app.run()
+     
