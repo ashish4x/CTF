@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask,Response
 from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 import re
@@ -16,6 +16,7 @@ lastFetched=datetime.now()
 next_event=datetime.now()
 switch=0
 time_remaining=0
+seconds_remaining=0
 status="Not running the script"
 
 def solver():
@@ -176,11 +177,11 @@ def solver():
         get_browser()
         get_hash()
         get_exception()
-        get_stream()
+        # get_stream()
 
         flagsString = ', '.join(flags)
         lastFetched=datetime.now()
-        status="script completed"
+        status="script completed | all flags found"
         
         
         
@@ -214,11 +215,20 @@ def solver():
 # thread.start()      
 
 
+def run_script():
+    global next_event
+    if not scheduler.running:
+        # solver()
+        scheduler.add_job(solver, 'interval', minutes=30,id='solver', next_run_time=datetime.now())
+        scheduler.start()
+        next_iter = scheduler.get_job('solver').next_run_time
 
-if not scheduler.running:
-    solver()
-    scheduler.add_job(solver, 'interval', minutes=5)
-    scheduler.start()
+        datetime_str = str(next_iter)
+        datetime_obj = datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S.%f%z")
+        next_event = datetime_obj.replace(tzinfo=None)
+     
+    
+    
 
 @app.route('/')
 def index():
@@ -239,11 +249,15 @@ def index():
     global switch
     global time_remaining
     global next_event
+    global seconds_remaining
 
-    # current_event = datetime.now()
     
-    # time_r = next_event - current_event
-    # time_remaining=int(time_r.total_seconds()/60)
+
+    current_event = datetime.now()
+   
+    time_r = next_event - current_event
+    time_remaining=int(time_r.total_seconds()/60)
+    seconds_remaining = time_r.total_seconds() % 60
     
 
     yield("<b>"+ "<h3>"+ "Flags: " + flagsString + '<br>'+ "</h3>" +"</b>")
@@ -258,14 +272,15 @@ def index():
     #     thread.start()
     #     return("done")
     
-        # yield("<br>"+ "The script will again execute in: "+ str(time_remaining)+" minutes")
+    yield("<br>"+ "The script will again execute in: "+ str(time_remaining)+" minutes " + " " +str(round(seconds_remaining)) + " seconds" + "<br>")
 
-
+    yield('<br>'+'<a href=https://github.com/ashish4x/CTF target="_blank">'+"Github Link"+"</a")
 
       
     return("done")
 
-        
+
+run_script()       
 
 
 if __name__ == '__main__':
