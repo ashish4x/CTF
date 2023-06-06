@@ -339,14 +339,13 @@ def index():
     return("done")
 
 
-@app.route('/start')
-def start():
-    run_script()
+
 
 
 
 if __name__ == '__main__':
-   
-    
+    thread = threading.Thread(target=run_script)
+    thread.start() 
+
     app.run()
      
