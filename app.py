@@ -274,7 +274,7 @@ def index():
     # yield("\n")
     yield("Last Solved : "+ str(format_time_ago(lastFetched)) + " minutes ago"+ '<br>')
     # yield("We run the script everytime someone visit the page and update the flags!"+"<br>"+"<br>")
-    yield("<b>"+  "Status: "  + "</b>"+ status)
+    yield("<b>"+  "Status: "  + "</b>"+ status + " ")
     # yield(status)
   
     # if(switch==0):
