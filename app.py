@@ -240,14 +240,14 @@ def index():
     if(switch==0):
         thread = threading.Thread(target=solver())
         thread.start()
-        return()
+        return("done")
     
         # yield("<br>"+ "The script will again execute in: "+ str(time_remaining)+" minutes")
 
 
 
       
-    return()
+    return("done")
 
         
 
