@@ -260,7 +260,7 @@ def solver():
 #         datetime_obj = datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S.%f%z")
 #         next_event = datetime_obj.replace(tzinfo=None)
      
-    
+solver()  
     
 
 @app.route('/')
@@ -284,23 +284,23 @@ def index():
     global next_event
     global seconds_remaining
 
-    if not scheduler.running:
-        # solver()
-        scheduler.add_job(solver, 'interval', minutes=30,id='solver',next_run_time=datetime.now())
-        scheduler.start()
-        next_iter = scheduler.get_job('solver').next_run_time
+    # if not scheduler.running:
+    #     # solver()
+    #     scheduler.add_job(solver, 'interval', minutes=30,id='solver',next_run_time=datetime.now())
+    #     scheduler.start()
+    #     next_iter = scheduler.get_job('solver').next_run_time
 
-        datetime_str = str(next_iter)
-        datetime_obj = datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S.%f%z")
-        next_event = datetime_obj.replace(tzinfo=None)
+    #     datetime_str = str(next_iter)
+    #     datetime_obj = datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S.%f%z")
+    #     next_event = datetime_obj.replace(tzinfo=None)
 
     
 
-    current_event = datetime.now()
+    # current_event = datetime.now()
    
-    time_r = next_event - current_event
-    time_remaining=int(time_r.total_seconds()/60)
-    seconds_remaining = time_r.total_seconds() % 60
+    # time_r = next_event - current_event
+    # time_remaining=int(time_r.total_seconds()/60)
+    # seconds_remaining = time_r.total_seconds() % 60
     
 
     yield("<b>"+ "<h3>"+ "Flags: " + flagsString + '<br>'+ "</h3>" +"</b>")
@@ -315,7 +315,7 @@ def index():
     #     thread.start()
     #     return("done")
     
-    yield("<br>"+ "The script will again execute in: "+ str(time_remaining)+" minutes " + " " +str(round(seconds_remaining)) + " seconds" + "<br>")
+    # yield("<br>"+ "The script will again execute in: "+ str(time_remaining)+" minutes " + " " +str(round(seconds_remaining)) + " seconds" + "<br>")
 
     yield('<br>'+'<a href=https://github.com/ashish4x/CTF target="_blank">'+"Github Link"+"</a")
 
