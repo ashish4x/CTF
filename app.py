@@ -38,6 +38,9 @@ def solver():
             if flag1.json():
                 print("Found the first flag")
                 flags.append(flag1.json())
+                status="browser work completed"
+
+            
 
 
         #hash
