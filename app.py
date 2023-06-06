@@ -26,7 +26,7 @@ def solver():
     
         # browser
         def get_browser():
-            
+            global status
             pattern = r'Mozilla\/[\d\.]+\s\(.*?\) AppleWebKit\/[\d\.]+\s\(KHTML, like Gecko\) Version\/[\d\.]+\sSafari\/[\d\.]+'
             status="inside browser"
             
@@ -42,6 +42,7 @@ def solver():
 
         #hash
         def get_hash():
+            global status
             print("\nDecrypting the MD5 hash")
             hashReq=requests.get(url+'hash')
             pattern = r"md5\(flag\+salt\):[a-f0-9]+:"
@@ -82,6 +83,7 @@ def solver():
 
         # exception
         def get_exception():
+            global status
             status="inside exception"
             print("\nFinding the third flag")
             exceptionReq=requests.get(url+"exception?q=tqaaaaa")
@@ -92,6 +94,7 @@ def solver():
 
         #stream
         def get_stream():
+            global status
             tmpRes=set()
             status="inside stream"
             print("\nFinding last flag")
@@ -152,7 +155,7 @@ def solver():
         lastFetched=datetime.now()
         status="done complete"
         
-        schedule.every(30).minutes.do(solver)
+        
         
     
 def run_script():
