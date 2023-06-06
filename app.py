@@ -215,6 +215,7 @@ def solver():
         flagsString = ', '.join(flags)
         lastFetched=datetime.now()
         status="script completed | all flags found"
+        switch=0
         
         
         
@@ -248,19 +249,19 @@ def solver():
 # thread.start()      
 
 
-def run_script():
-    global next_event
-    if not scheduler.running:
-        # solver()
-        scheduler.add_job(solver, 'interval', minutes=30,id='solver', next_run_time=datetime.now())
-        scheduler.start()
-        next_iter = scheduler.get_job('solver').next_run_time
+# def run_script():
+#     global next_event
+#     if not scheduler.running:
+#         # solver()
+#         scheduler.add_job(solver, 'interval', minutes=30,id='solver', next_run_time=datetime.now())
+#         scheduler.start()
+#         next_iter = scheduler.get_job('solver').next_run_time
 
-        datetime_str = str(next_iter)
-        datetime_obj = datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S.%f%z")
-        next_event = datetime_obj.replace(tzinfo=None)
+#         datetime_str = str(next_iter)
+#         datetime_obj = datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S.%f%z")
+#         next_event = datetime_obj.replace(tzinfo=None)
 
-run_script()
+# run_script()
  
     
 
@@ -297,12 +298,15 @@ def index():
 
     
 
-    current_event = datetime.now()
+    # current_event = datetime.now()
    
-    time_r = next_event - current_event
-    time_remaining=int(time_r.total_seconds()/60)
-    seconds_remaining = time_r.total_seconds() % 60
-    
+    # time_r = next_event - current_event
+    # time_remaining=int(time_r.total_seconds()/60)
+    # seconds_remaining = time_r.total_seconds() % 60
+
+    if(switch==0):
+        thread = threading.Thread(target=solver)
+        thread.start() 
 
     yield("<b>"+ "<h3>"+ "Flags: " + flagsString + '<br>'+ "</h3>" +"</b>")
     # yield("\n")
@@ -316,7 +320,7 @@ def index():
     #     thread.start()
     #     return("done")
     
-    yield("<br>"+ "The script will again execute in: "+ str(time_remaining)+" minutes " + " " +str(round(seconds_remaining)) + " seconds" + "<br>")
+    # yield("<br>"+ "The script will again execute in: "+ str(time_remaining)+" minutes " + " " +str(round(seconds_remaining)) + " seconds" + "<br>")
 
     yield('<br>'+'<a href=https://github.com/ashish4x/CTF target="_blank">'+"Github Link"+"</a")
 
