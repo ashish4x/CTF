@@ -32,9 +32,12 @@ def solver():
             
             print("\nFinding the first Flag")
             browserReq= requests.get(url+'browser')
+            status="got req"
             user_agent = re.search(pattern, browserReq.json()).group()
+            status="got user-agent"
             headers = {"User-Agent": user_agent}
             flag1 = requests.get(url+'browser', headers=headers)
+            status="got flag"
             if flag1.json():
                 print("Found the first flag")
                 flags.append(flag1.json())
