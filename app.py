@@ -238,7 +238,7 @@ def index():
         thread = threading.Thread(target=solver())
         thread.start()
         return("done")
-    else:
+    
         # yield("<br>"+ "The script will again execute in: "+ str(time_remaining)+" minutes")
 
 
