@@ -18,13 +18,13 @@ status="Not running the script"
 
 def solver():
     
-    global flagsString
-    global lastFetched
-    global status
-    global switch
-    switch=1
+        global flagsString
+        global lastFetched
+        global status
+        global switch
+        switch=1
     # with app.app_context():
-    while True:
+    # while True:
        
         
         status="Solving"
@@ -175,17 +175,17 @@ def solver():
         lastFetched=datetime.now()
         status="script completed"
         
-        time.sleep(30 * 60)
+        
         
     
-# def run_script():
+def run_script():
    
-#     global next_event
-#     # Run the script initially
-#     schedule.every(30).minutes.do(solver)
-#     next_event = schedule.next_run()
+    # global next_event
+    # Run the script initially
+    schedule.every(30).minutes.do(solver)
+    # next_event = schedule.next_run()
     
-#     solver()
+    solver()
     
 
     # Schedule the script to run every 30 minutes
@@ -238,7 +238,7 @@ def index():
     # yield(status)
   
     if(switch==0):
-        thread = threading.Thread(target=solver())
+        thread = threading.Thread(target=run_script())
         thread.start()
         return("done")
     
