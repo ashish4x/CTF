@@ -15,7 +15,7 @@ app = Flask(__name__)
 scheduler = BackgroundScheduler(daemon=True)
 flagsString="Solving"
 lastFetched=datetime.now()
-next_event=time.time()
+next_event=datetime.now()
 switch=0
 time_remaining=0
 seconds_remaining=0
@@ -127,7 +127,7 @@ def solver():
                 global status
                 status="getting tasks"
                 tasks=[]
-                for i in range(100):
+                for i in range(200):
                     status="inside task loop"
                     tasks.append(session.get(url+"stream"))
                     status="inside task loop 2"
@@ -143,7 +143,7 @@ def solver():
                         res_char= await response.json()
                         try:
                             tmpRes.add(res_char)
-                            status=str(res_char)
+                            
                             print(res_char)
                         except TypeError:
                             continue
@@ -304,6 +304,12 @@ def index():
         # solver()
         scheduler.add_job(run_script, 'interval', minutes=30,id='solver',next_run_time=datetime.now())
         scheduler.start()
+        next_iter = scheduler.get_job('solver').next_run_time
+
+        datetime_str = str(next_iter)
+        datetime_obj = datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S.%f%z")
+        next_event = datetime_obj.replace(tzinfo=None)
+    
 
     # remaining_time = next_event - time.time()
 
@@ -316,17 +322,17 @@ def index():
 
     
 
-    # current_event = datetime.now()
+    current_event = datetime.now()
    
-    # time_r = next_event - current_event
-    # time_remaining=int(time_r.total_seconds()/60)
-    # seconds_remaining = time_r.total_seconds() % 60
+    time_r = next_event - current_event
+    time_remaining=int(time_r.total_seconds()/60)
+    seconds_remaining = time_r.total_seconds() % 60
 
     
 
-    yield("<b>"+ "<h3>"+ "Flags: " + flagsString + '<br>'+ "</h3>" +"</b>")
+    yield("<b>"+ "<h3>"+ "Flags: " + flagsString + "</h3>" +"</b>"+"<br>")
     # yield("\n")
-    yield("Last Solved : "+ str(format_time_ago(lastFetched)) + " minutes ago"+ " try refreshing if you don't see the flags " '<br>')
+    yield("Last Solved : "+ str(format_time_ago(lastFetched)) + " minutes ago"+ " | try refreshing if you don't see the flags " '<br>')
     # yield("We run the script everytime someone visit the page and update the flags!"+"<br>"+"<br>")
     yield("<b>"+  "Status: "  + "</b>"+ status + " ")
     # yield(status)
@@ -336,7 +342,7 @@ def index():
     #     thread.start()
     #     return("done")
     
-    # yield("<br>"+ "The script will again execute in: "+ str(int(remaining_time/60))+" minutes ")
+    yield("<br>"+ "The script will again execute in: "+ str(time_remaining)+" minutes "  )
 
     yield('<br>'+'<a href=https://github.com/ashish4x/CTF target="_blank">'+"Github Link"+"</a")
 
