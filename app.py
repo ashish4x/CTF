@@ -113,7 +113,7 @@ def solver():
             status="fetching stream characters"
             for i in range(70):
                 request=requests.get(url+"stream")
-                status= (str(i)+" characters fetched")
+                status= ("Still finding the last flag | " +str(i)+" characters fetched")
                 tmpRes.add(request.json())
 
 
@@ -172,16 +172,16 @@ def solver():
         
         
     
-def run_script():
-    # Run the script initially
-    solver()
+# def run_script():
+#     # Run the script initially
+#     solver()
 
-    # Schedule the script to run every 30 minutes
-    schedule.every(30).minutes.do(solver)
+#     # Schedule the script to run every 30 minutes
+#     schedule.every(30).minutes.do(solver)
 
-    # Continuously run the scheduled tasks in a separate thread
-    while True:
-        schedule.run_pending()
+#     # Continuously run the scheduled tasks in a separate thread
+#     while True:
+#         schedule.run_pending()
     
 
 # @app.before_first_request
@@ -214,13 +214,12 @@ def index():
     yield("<b>"+ "<h3>"+ "Flags: " + flagsString + '<br>'+ "</h3>" +"</b>")
     # yield("\n")
     yield("Last Solved : "+ str(format_time_ago(lastFetched)) + '<br>')
-    yield("We run the script everytime someone visit the page and update the flags!"+"<br>")
+    yield("We run the script everytime someone visit the page and update the flags!"+"<br>"+"<br>")
     yield("<b>"+  "Status: "  + "</b>"+ status)
     # yield(status)
   
     if(switch==0):
-        thread = threading.Thread(target=run_script)
-        thread.start()
+        solver()
 
 
       
