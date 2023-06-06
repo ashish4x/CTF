@@ -276,10 +276,7 @@ def solver():
 def run_script():
     thread = threading.Thread(target=solver,daemon=True)
     thread.start()
-if not scheduler.running:
-        # solver()
-        scheduler.add_job(run_script, 'interval', minutes=30,id='solver',next_run_time=datetime.now())
-        scheduler.start()
+
     
 
 @app.route('/')
@@ -302,6 +299,11 @@ def index():
     global time_remaining
     global next_event
     global seconds_remaining
+
+    if not scheduler.running:
+        # solver()
+        scheduler.add_job(run_script, 'interval', minutes=30,id='solver',next_run_time=datetime.now())
+        scheduler.start()
 
     # remaining_time = next_event - time.time()
 
