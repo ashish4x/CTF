@@ -234,6 +234,7 @@ def index():
     if(switch==0):
         thread = threading.Thread(target=run_script())
         thread.start()
+        return("done")
     else:
         yield("<br>"+ "The script will again execute in: "+ str(time_remaining)+" minutes")
 
