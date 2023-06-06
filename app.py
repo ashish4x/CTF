@@ -218,8 +218,11 @@ def solver():
         # time.sleep(30*60)
         # switch=0
         
-        
-        
+
+
+
+
+
     
 # def run_script():
    
@@ -266,13 +269,8 @@ def solver():
  
 
 def run_script():
-    global next_event
-    while True:
-        sleep_duration= 30*60
-        solver()
-        next_event = time.time() + sleep_duration
-        
-        time.sleep(sleep_duration)
+    thread = threading.Thread(target=solver)
+    thread.start()  
     
 
 @app.route('/')
@@ -296,12 +294,12 @@ def index():
     global next_event
     global seconds_remaining
 
-    remaining_time = next_event - time.time()
+    # remaining_time = next_event - time.time()
 
-    # if not scheduler.running:
-    #     # solver()
-    #     scheduler.add_job(solver, 'interval', minutes=30,id='solver',next_run_time=datetime.now())
-    #     scheduler.start()
+    if not scheduler.running:
+        # solver()
+        scheduler.add_job(run_script, 'interval', minutes=30,id='solver',next_run_time=datetime.now())
+        scheduler.start()
     #     next_iter = scheduler.get_job('solver').next_run_time
 
     #     datetime_str = str(next_iter)
@@ -330,7 +328,7 @@ def index():
     #     thread.start()
     #     return("done")
     
-    yield("<br>"+ "The script will again execute in: "+ str(int(remaining_time/60))+" minutes ")
+    # yield("<br>"+ "The script will again execute in: "+ str(int(remaining_time/60))+" minutes ")
 
     yield('<br>'+'<a href=https://github.com/ashish4x/CTF target="_blank">'+"Github Link"+"</a")
 
@@ -344,8 +342,7 @@ def index():
 
 
 if __name__ == '__main__':
-    thread = threading.Thread(target=run_script)
-    thread.start() 
+   
 
     app.run()
      
