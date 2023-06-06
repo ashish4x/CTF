@@ -138,6 +138,7 @@ def solver():
                         res_char= await response.json()
                         try:
                             tmpRes.add(res_char)
+                            status=str(res_char)
                             print(res_char)
                         except TypeError:
                             continue
@@ -147,6 +148,7 @@ def solver():
 
 
             asyncio.run(get_stream_char())
+            status="all char added"
 
 
 
