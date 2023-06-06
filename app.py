@@ -127,7 +127,7 @@ def solver():
                 global status
                 status="getting tasks"
                 tasks=[]
-                for i in range(1):
+                for i in range(100):
                     status="inside task loop"
                     tasks.append(session.get(url+"stream"))
                     status="inside task loop 2"
