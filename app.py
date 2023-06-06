@@ -125,7 +125,7 @@ def solver():
 
             def get_tasks(session):
                 tasks=[]
-                for i in range(300):
+                for i in range(100):
                     tasks.append(asyncio.create_task(session.get(url+"stream")))
                 return tasks
             
@@ -305,8 +305,7 @@ def index():
     # seconds_remaining = time_r.total_seconds() % 60
 
     if(switch==0):
-        thread = threading.Thread(target=solver)
-        thread.start() 
+        solver()
 
     yield("<b>"+ "<h3>"+ "Flags: " + flagsString + '<br>'+ "</h3>" +"</b>")
     # yield("\n")
