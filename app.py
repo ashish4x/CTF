@@ -166,7 +166,7 @@ def solver():
 
             print("Done fetching")
             status="done fetching stream characters"
-            print(tmpRes)
+            # print(tmpRes)
 
             def find_dictionary_word(characters, word_list_file):
                 # Generate all possible permutations of the characters
@@ -316,8 +316,7 @@ def index():
     # time_remaining=int(time_r.total_seconds()/60)
     # seconds_remaining = time_r.total_seconds() % 60
 
-    if(switch==0):
-        run_script()
+    
 
     yield("<b>"+ "<h3>"+ "Flags: " + flagsString + '<br>'+ "</h3>" +"</b>")
     # yield("\n")
@@ -335,7 +334,8 @@ def index():
 
     yield('<br>'+'<a href=https://github.com/ashish4x/CTF target="_blank">'+"Github Link"+"</a")
 
-      
+    if(switch==0):
+        run_script()  
     return("done")
 
 
