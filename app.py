@@ -117,10 +117,15 @@ def solver():
             print("\nFinding last flag")
             print("Fetching stream characters")
             status="fetching stream characters"
-            for i in range(70):
+            for i in range(100):
+                if(len(tmpRes)==7):
+                    print("already found all")
+                    break
                 request=requests.get(url+"stream")
                 status= ("Still finding the last flag | " +str(i)+" characters fetched")
+                print(str(i))
                 tmpRes.add(request.json())
+
 
 
             print("Done fetching")
@@ -203,8 +208,7 @@ def run_script():
 # def on_startup():
     
 
-thread = threading.Thread(target=run_script)
-thread.start()        
+run_script()       
 
 
 @app.route('/')
