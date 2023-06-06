@@ -130,6 +130,7 @@ def solver():
                 return tasks
             
             async def get_stream_char():
+                global status
                 async with aiohttp.ClientSession() as session:
                     tasks=get_tasks(session)
                     responses=await asyncio.gather(*tasks)
