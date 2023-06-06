@@ -15,7 +15,7 @@ app = Flask(__name__)
 scheduler = BackgroundScheduler(daemon=True)
 flagsString="Solving"
 lastFetched=datetime.now()
-next_event=datetime.now()
+next_event=time.time()
 switch=0
 time_remaining=0
 seconds_remaining=0
@@ -215,7 +215,8 @@ def solver():
         flagsString = ', '.join(flags)
         lastFetched=datetime.now()
         status="script completed | all flags found"
-        switch=0
+        # time.sleep(30*60)
+        # switch=0
         
         
         
@@ -263,6 +264,15 @@ def solver():
 
 # run_script()
  
+
+def run_script():
+    global next_event
+    while True:
+        sleep_duration= 30*60
+        solver()
+        next_event = time.time() + sleep_duration
+        
+        time.sleep(sleep_duration)
     
 
 @app.route('/')
@@ -286,6 +296,8 @@ def index():
     global next_event
     global seconds_remaining
 
+    remaining_time = next_event - time.time()
+
     # if not scheduler.running:
     #     # solver()
     #     scheduler.add_job(solver, 'interval', minutes=30,id='solver',next_run_time=datetime.now())
@@ -305,11 +317,11 @@ def index():
     # seconds_remaining = time_r.total_seconds() % 60
 
     if(switch==0):
-        solver()
+        run_script()
 
     yield("<b>"+ "<h3>"+ "Flags: " + flagsString + '<br>'+ "</h3>" +"</b>")
     # yield("\n")
-    yield("Last Solved : "+ str(format_time_ago(lastFetched)) + " minutes ago"+ '<br>')
+    yield("Last Solved : "+ str(format_time_ago(lastFetched)) + " minutes ago"+ " try refreshing if you don't see the flags " '<br>')
     # yield("We run the script everytime someone visit the page and update the flags!"+"<br>"+"<br>")
     yield("<b>"+  "Status: "  + "</b>"+ status + " ")
     # yield(status)
@@ -319,7 +331,7 @@ def index():
     #     thread.start()
     #     return("done")
     
-    # yield("<br>"+ "The script will again execute in: "+ str(time_remaining)+" minutes " + " " +str(round(seconds_remaining)) + " seconds" + "<br>")
+    yield("<br>"+ "The script will again execute in: "+ str(int(remaining_time/60))+" minutes ")
 
     yield('<br>'+'<a href=https://github.com/ashish4x/CTF target="_blank">'+"Github Link"+"</a")
 
