@@ -17,13 +17,15 @@ time_remaining=0
 status="Not running the script"
 
 def solver():
+    
+    global flagsString
+    global lastFetched
+    global status
+    global switch
     switch=1
     # with app.app_context():
-    while true:
-        global flagsString
-        global lastFetched
-        global status
-        global switch
+    while True:
+       
         
         status="Solving"
 
