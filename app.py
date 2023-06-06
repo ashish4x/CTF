@@ -213,13 +213,12 @@ def solver():
 # thread = threading.Thread(target=run_script)
 # thread.start()      
 
-@app.before_first_request
-def start_scheduler():
-     
-     if not scheduler.running:
-        solver()
-        scheduler.add_job(solver, 'interval', minutes=5)
-        scheduler.start()
+
+
+if not scheduler.running:
+    solver()
+    scheduler.add_job(solver, 'interval', minutes=5)
+    scheduler.start()
 
 @app.route('/')
 def index():
