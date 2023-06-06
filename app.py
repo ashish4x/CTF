@@ -125,7 +125,7 @@ def solver():
 
             def get_tasks(session):
                 tasks=[]
-                for i in range(100):
+                for i in range(200):
                     tasks.append(asyncio.create_task(session.get(url+"stream")))
                 return tasks
             
