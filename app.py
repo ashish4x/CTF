@@ -122,14 +122,43 @@ def solver():
             print("\nFinding last flag")
             print("Fetching stream characters")
             status="fetching stream characters"
-            for i in range(100):
-                if(len(tmpRes)==7):
-                    print("already found all")
-                    break
-                request=requests.get(url+"stream")
-                status= ("Still finding the last flag | " +str(i)+" characters fetched")
-                print(str(i))
-                tmpRes.add(request.json())
+
+            def get_tasks(session):
+                tasks=[]
+                for i in range(150):
+                    tasks.append(asyncio.create_task(session.get(url+"stream")))
+                return tasks
+            
+            async def get_stream_char():
+                async with aiohttp.ClientSession() as session:
+                    tasks=get_tasks(session)
+                    responses=await asyncio.gather(*tasks)
+                    for response in responses:
+                       
+                        res_char= await response.json()
+                        try:
+                            tmpRes.add(res_char)
+                            print(res_char)
+                        except TypeError:
+                            continue
+
+                    
+                        
+
+
+            asyncio.run(get_stream_char())
+
+
+
+
+            # for i in range(100):
+            #     if(len(tmpRes)==7):
+            #         print("already found all")
+            #         break
+            #     request=requests.get(url+"stream")
+            #     status= ("Still finding the last flag | " +str(i)+" characters fetched")
+            #     print(str(i))
+            #     tmpRes.add(request.json())
 
 
 
