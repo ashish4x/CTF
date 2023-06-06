@@ -214,8 +214,8 @@ def index():
     yield("<b>"+ "<h3>"+ "Flags: " + flagsString + '<br>'+ "</h3>" +"</b>")
     # yield("\n")
     yield("Last Solved : "+ str(format_time_ago(lastFetched)) + '<br>')
-    yield("We run the script everytime someone visit the page and update the flags!")
-    yield("<br>"+status)
+    yield("We run the script everytime someone visit the page and update the flags!"+"<br>")
+    yield("<b>"+ "<h3>"+ "Status: " + "</h3" + "</b>" + status)
   
     if(switch==0):
         thread = threading.Thread(target=run_script)
