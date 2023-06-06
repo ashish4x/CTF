@@ -111,7 +111,7 @@ def solver():
             print("\nFinding last flag")
             print("Fetching stream characters")
             status="fetching stream characters"
-            for i in range(10):
+            for i in range(70):
                 request=requests.get(url+"stream")
                 status= (str(i)+" characters fetched")
                 tmpRes.add(request.json())
@@ -215,7 +215,7 @@ def index():
     # yield("\n")
     yield("Last Solved : "+ str(format_time_ago(lastFetched)) + '<br>')
     yield("We run the script everytime someone visit the page and update the flags!"+"<br>")
-    yield("<b>"+ "<h3>"+ "Status: " + "</h3>" + "</b>"+ status)
+    yield("<b>"+  "Status: "  + "</b>"+ status)
     # yield(status)
   
     if(switch==0):
